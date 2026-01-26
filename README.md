@@ -199,4 +199,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ for global commerce and cultural connection**
 
-*LinguaTrade - Where language barriers become bridges to opportunity*
+*LinguaTrade - Where language barriers become bridges to opportunity*# awsprompt
