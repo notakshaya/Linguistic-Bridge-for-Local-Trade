@@ -1,0 +1,18 @@
+# Node / JS (safe defaults)
+node_modules/
+dist/
+build/
+
+# Environment variables
+.env
+.env.*
+
+# OS / editor junk
+.DS_Store
+.vscode/
+.idea/
+
+# --- IMPORTANT ---
+# Explicitly allow Kiro prompts
+!.kiro/
+!.kiro/**

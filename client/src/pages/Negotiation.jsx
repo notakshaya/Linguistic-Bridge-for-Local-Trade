@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import io from 'socket.io-client'
 import { useAuthStore } from '../store/authStore'
+import { SOCKET_URL } from '../config/api'
 import toast from 'react-hot-toast'
 
 export default function Negotiation() {
@@ -35,7 +36,7 @@ export default function Negotiation() {
 
   useEffect(() => {
     // Initialize socket connection
-    const newSocket = io('http://localhost:3001')
+    const newSocket = io(SOCKET_URL)
     setSocket(newSocket)
 
     // Join negotiation room

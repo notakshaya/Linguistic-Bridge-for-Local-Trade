@@ -9,17 +9,34 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    methods: ["GET", "POST"]
+    origin: [
+      process.env.CLIENT_URL || "http://localhost:5173",
+      "https://linguatrade.vercel.app",
+      "https://linguatrade.netlify.app",
+      /\.vercel\.app$/,
+      /\.netlify\.app$/
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    process.env.CLIENT_URL || "http://localhost:5173",
+    "https://linguatrade.vercel.app",
+    "https://linguatrade.netlify.app",
+    /\.vercel\.app$/,
+    /\.netlify\.app$/
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Routes
+app.use('/api/health', require('./routes/health'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/vendors', require('./routes/vendors'));
 app.use('/api/negotiations', require('./routes/negotiations'));
