@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar'
+import DemoBanner from './components/DemoBanner'
 import Home from './pages/Home'
 import Marketplace from './pages/Marketplace'
 import Negotiation from './pages/Negotiation'
@@ -15,6 +16,7 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      <DemoBanner />
       <Navbar />
       
       <motion.main

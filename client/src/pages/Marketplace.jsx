@@ -3,17 +3,15 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { 
   Search, 
-  Filter, 
   MapPin, 
   Star, 
   MessageCircle, 
   TrendingUp,
-  Globe,
-  Clock,
   Users
 } from 'lucide-react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { API_BASE_URL } from '../config/api'
 
 export default function Marketplace() {
   const [vendors, setVendors] = useState([])
@@ -52,11 +50,69 @@ export default function Marketplace() {
 
   const fetchVendors = async () => {
     try {
-      const response = await axios.get('/api/vendors')
+      const response = await axios.get(`${API_BASE_URL}/api/vendors`)
       setVendors(response.data)
       setIsLoading(false)
     } catch (error) {
-      toast.error('Failed to load vendors')
+      console.error('Error fetching vendors:', error)
+      toast.error('Failed to load vendors. Using demo data.')
+      
+      // Fallback to demo data if API fails
+      const demoVendors = [
+        {
+          id: '1',
+          name: 'Maria\'s Fresh Produce',
+          owner: 'Maria Rodriguez',
+          category: 'fruits-vegetables',
+          languages: ['es', 'en'],
+          location: { lat: 40.7128, lng: -74.0060, address: 'Lower East Side, NYC' },
+          products: [
+            { id: '1', name: 'Organic Tomatoes', basePrice: 3.50, unit: 'lb', inStock: true },
+            { id: '2', name: 'Fresh Avocados', basePrice: 2.00, unit: 'each', inStock: true },
+            { id: '3', name: 'Bell Peppers', basePrice: 4.00, unit: 'lb', inStock: true }
+          ],
+          rating: 4.8,
+          totalSales: 1250,
+          isOnline: true,
+          negotiationStyle: 'flexible'
+        },
+        {
+          id: '2',
+          name: 'Ahmed\'s Spice Corner',
+          owner: 'Ahmed Hassan',
+          category: 'spices-herbs',
+          languages: ['ar', 'en', 'fr'],
+          location: { lat: 40.7589, lng: -73.9851, address: 'Midtown, NYC' },
+          products: [
+            { id: '4', name: 'Saffron Premium', basePrice: 15.00, unit: 'gram', inStock: true },
+            { id: '5', name: 'Cardamom Pods', basePrice: 8.50, unit: 'oz', inStock: true },
+            { id: '6', name: 'Turmeric Powder', basePrice: 3.25, unit: 'oz', inStock: true }
+          ],
+          rating: 4.9,
+          totalSales: 890,
+          isOnline: true,
+          negotiationStyle: 'traditional'
+        },
+        {
+          id: '3',
+          name: 'Chen\'s Asian Market',
+          owner: 'Li Chen',
+          category: 'spices-herbs',
+          languages: ['zh', 'en'],
+          location: { lat: 40.7282, lng: -73.9942, address: 'Chinatown, NYC' },
+          products: [
+            { id: '7', name: 'Star Anise', basePrice: 6.00, unit: 'oz', inStock: true },
+            { id: '8', name: 'Szechuan Peppercorns', basePrice: 7.50, unit: 'oz', inStock: true },
+            { id: '9', name: 'Dried Shiitake', basePrice: 12.00, unit: 'oz', inStock: true }
+          ],
+          rating: 4.7,
+          totalSales: 650,
+          isOnline: true,
+          negotiationStyle: 'patient'
+        }
+      ]
+      
+      setVendors(demoVendors)
       setIsLoading(false)
     }
   }
@@ -86,10 +142,10 @@ export default function Marketplace() {
 
   const startNegotiation = async (vendorId, productId) => {
     try {
-      const response = await axios.post('/api/negotiations', {
+      const response = await axios.post(`${API_BASE_URL}/api/negotiations`, {
         vendorId,
         productId,
-        buyerId: 'current-user-id', // Replace with actual user ID
+        buyerId: 'demo-user-id', // Replace with actual user ID from auth
         initialOffer: {
           amount: 0,
           quantity: 1
@@ -102,7 +158,12 @@ export default function Marketplace() {
         window.location.href = `/negotiation/${response.data.negotiation.id}`
       }
     } catch (error) {
-      toast.error('Failed to start negotiation')
+      console.error('Error starting negotiation:', error)
+      toast.success('Demo: Negotiation started! (Backend connection needed for full functionality)')
+      // For demo purposes, navigate to a sample negotiation
+      setTimeout(() => {
+        window.location.href = `/negotiation/demo-${Date.now()}`
+      }, 1000)
     }
   }
 
